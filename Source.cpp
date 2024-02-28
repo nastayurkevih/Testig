@@ -1,10 +1,10 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <vector>
 #include <string>
 #include <windows.h>
 #include <conio.h>
 #include <fstream>
-
+//Р·Р°РµРґР°РµС‚ РїСЂРё РІС‹Р±РѕСЂРµ, РІС‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹
 class User
 {
 public:
@@ -26,6 +26,7 @@ public:
     void LogFill();
     void PassFill();
     int GetId();
+    std::string Getlogin();
     void Fillfile();
 private:
     char* name;
@@ -49,14 +50,21 @@ public:
     void choiceTest();
     int numTest(char id);
     void Test(char id1, char id2);
-    int determineScore(int r, int f);
-
+    int determineScore(double pr);
+    void ShowAnswers();
+    void SaveInterTesting(char id1, char id2);
+    void Selogin(std::string login);
+    void ShowfinishTest();
+    void  finishTest();
 private:
     std::vector<std::string> sections;
     std::vector<std::string> nameQuiz;
     std::vector<std::string> questions;
     std::vector<std::string> answers;
+    std::vector<std::string> useranswer;
+    std::vector<bool> answerRT;
     int countQues;
+    std::string login;
 };
 
 
@@ -64,7 +72,7 @@ class SystemTesting
 {
 public:
     SystemTesting() : r{ 0 } {}
-    void Start();//начала прокраммы и выбор режима администратора или тестируемого
+    void Start();//РЅР°С‡Р°Р»Р° РїСЂРѕРєСЂР°РјРјС‹ Рё РІС‹Р±РѕСЂ СЂРµР¶РёРјР° Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° РёР»Рё С‚РµСЃС‚РёСЂСѓРµРјРѕРіРѕ
     void UserStart();//
     void UserLog();//
     bool PersonInFile(std::string login, std::string password);//
@@ -74,7 +82,6 @@ public:
     bool ThereIsPass(std::string password);
     void Fillfile();
     void ShowProfile();
-
 private:
     User user;
     Quiz quiz;
@@ -83,30 +90,26 @@ private:
 
 
 
-//После входа гость имеет возможность просмотреть свои предыдущие результаты тестирования, сдать новое тестирование.
-//После сдачи теста гость видит результат тестирования, количество правильно
-//отвеченных вопросов, процент правильных ответов и полученную оценку.
-//Студент имеет возможность прервать тестирование и продолжить его тогда,
-//когда ему это будет удобно.
-//Оценивание нужно вести на основании 12 - балльной системы, привязанной
-//к количеству вопросов теста.
-//Пароли и логины гостей хранятся в зашифрованном виде.
+//РџРѕСЃР»Рµ РІС…РѕРґР° РіРѕСЃС‚СЊ РёРјРµРµС‚ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РїСЂРѕСЃРјРѕС‚СЂРµС‚СЊ СЃРІРѕРё РїСЂРµРґС‹РґСѓС‰РёРµ СЂРµР·СѓР»СЊС‚Р°С‚С‹ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ, СЃРґР°С‚СЊ РЅРѕРІРѕРµ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ.
+//РЎС‚СѓРґРµРЅС‚ РёРјРµРµС‚ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РїСЂРµСЂРІР°С‚СЊ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ Рё РїСЂРѕРґРѕР»Р¶РёС‚СЊ РµРіРѕ С‚РѕРіРґР°,
+//РєРѕРіРґР° РµРјСѓ СЌС‚Рѕ Р±СѓРґРµС‚ СѓРґРѕР±РЅРѕ.
+//РџР°СЂРѕР»Рё Рё Р»РѕРіРёРЅС‹ РіРѕСЃС‚РµР№ С…СЂР°РЅСЏС‚СЃСЏ РІ Р·Р°С€РёС„СЂРѕРІР°РЅРЅРѕРј РІРёРґРµ.
 
 
 
-//Описание режима работа для Администратора(в дальнейшем админ)
-//В системе может быть только один админ, логин и пароль админа задается
-//при первом входе в программу.
-//В дальнейшем пароль и логин можно изменить(но данную возможность имеет
-//	только админ).
-//	Пароль и логин необходимо хранить только в зашифрованном виде.
-//	При работе с системой админ имеет следующие возможности :
-//• Управление пользователями – создание, удаление, модификация пользователей.
-//• Просмотр статистики – просмотр результатов тестирования в общем
-//по категориям, по конкретным тестам, по конкретным пользователям.
-//Результаты просмотра статистики можно вывести в файл.
-//• Управление тестированием – админ имеет возможность добавлять категории, тесты, вопросы к тестам, задавать правильные и неправильные ответы, импортировать и экспортировать категории и тесты с
-//вопросами из файла(и в файл).
+//РћРїРёСЃР°РЅРёРµ СЂРµР¶РёРјР° СЂР°Р±РѕС‚Р° РґР»СЏ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°(РІ РґР°Р»СЊРЅРµР№С€РµРј Р°РґРјРёРЅ)
+//Р’ СЃРёСЃС‚РµРјРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ С‚РѕР»СЊРєРѕ РѕРґРёРЅ Р°РґРјРёРЅ, Р»РѕРіРёРЅ Рё РїР°СЂРѕР»СЊ Р°РґРјРёРЅР° Р·Р°РґР°РµС‚СЃСЏ
+//РїСЂРё РїРµСЂРІРѕРј РІС…РѕРґРµ РІ РїСЂРѕРіСЂР°РјРјСѓ.
+//Р’ РґР°Р»СЊРЅРµР№С€РµРј РїР°СЂРѕР»СЊ Рё Р»РѕРіРёРЅ РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ(РЅРѕ РґР°РЅРЅСѓСЋ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РёРјРµРµС‚
+//	С‚РѕР»СЊРєРѕ Р°РґРјРёРЅ).
+//	РџР°СЂРѕР»СЊ Рё Р»РѕРіРёРЅ РЅРµРѕР±С…РѕРґРёРјРѕ С…СЂР°РЅРёС‚СЊ С‚РѕР»СЊРєРѕ РІ Р·Р°С€РёС„СЂРѕРІР°РЅРЅРѕРј РІРёРґРµ.
+//	РџСЂРё СЂР°Р±РѕС‚Рµ СЃ СЃРёСЃС‚РµРјРѕР№ Р°РґРјРёРЅ РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёРµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё :
+//вЂў РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё вЂ“ СЃРѕР·РґР°РЅРёРµ, СѓРґР°Р»РµРЅРёРµ, РјРѕРґРёС„РёРєР°С†РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№.
+//вЂў РџСЂРѕСЃРјРѕС‚СЂ СЃС‚Р°С‚РёСЃС‚РёРєРё вЂ“ РїСЂРѕСЃРјРѕС‚СЂ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ РІ РѕР±С‰РµРј
+//РїРѕ РєР°С‚РµРіРѕСЂРёСЏРј, РїРѕ РєРѕРЅРєСЂРµС‚РЅС‹Рј С‚РµСЃС‚Р°Рј, РїРѕ РєРѕРЅРєСЂРµС‚РЅС‹Рј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРј.
+//Р РµР·СѓР»СЊС‚Р°С‚С‹ РїСЂРѕСЃРјРѕС‚СЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РјРѕР¶РЅРѕ РІС‹РІРµСЃС‚Рё РІ С„Р°Р№Р».
+//вЂў РЈРїСЂР°РІР»РµРЅРёРµ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµРј вЂ“ Р°РґРјРёРЅ РёРјРµРµС‚ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РґРѕР±Р°РІР»СЏС‚СЊ РєР°С‚РµРіРѕСЂРёРё, С‚РµСЃС‚С‹, РІРѕРїСЂРѕСЃС‹ Рє С‚РµСЃС‚Р°Рј, Р·Р°РґР°РІР°С‚СЊ РїСЂР°РІРёР»СЊРЅС‹Рµ Рё РЅРµРїСЂР°РІРёР»СЊРЅС‹Рµ РѕС‚РІРµС‚С‹, РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ Рё СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РєР°С‚РµРіРѕСЂРёРё Рё С‚РµСЃС‚С‹ СЃ
+//РІРѕРїСЂРѕСЃР°РјРё РёР· С„Р°Р№Р»Р°(Рё РІ С„Р°Р№Р»).
 
 
 
@@ -115,33 +118,38 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     SystemTesting test;
+    test.Start();
     Quiz quiz;
-    quiz.choiceTest();
+   /* int x;
+    x = _getch();
+    std::cout << x;*/
+
 
 };
 
 void SystemTesting::Start()
 {
-    int c = 119;//вверх 119 ввниз 115
+    system("cls");
+    int c = 119;//РІРІРµСЂС… 119 РІРІРЅРёР· 115
     int k;
-    std::cout << "Начало тестирования.\n Выберите режим пользования." << std::endl;
-    std::cout << "(включите на кавиатуре английкую раскладку)" << std::endl;
+    std::cout << "РќР°С‡Р°Р»Рѕ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ.\n Р’С‹Р±РµСЂРёС‚Рµ СЂРµР¶РёРј РїРѕР»СЊР·РѕРІР°РЅРёСЏ." << std::endl;
+    std::cout << "(РІРєР»СЋС‡РёС‚Рµ РЅР° РєР°РІРёР°С‚СѓСЂРµ Р°РЅРіР»РёР№РєСѓСЋ СЂР°СЃРєР»Р°РґРєСѓ)" << std::endl;
     Sleep(4000);
     while (c != 13)
     {
         if (c == 119)
         {
             system("cls");
-            std::cout << "-->Войти как администратор" << std::endl;
-            std::cout << "\tВойти как ползователь" << std::endl;
+            std::cout << "-->Р’РѕР№С‚Рё РєР°Рє Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ" << std::endl;
+            std::cout << "\tР’РѕР№С‚Рё РєР°Рє РїРѕР»Р·РѕРІР°С‚РµР»СЊ" << std::endl;
             k = c;
             c = _getch();
         }
         else if (c == 115)
         {
             system("cls");
-            std::cout << "\tВойти как администратор" << std::endl;
-            std::cout << "-->Войти как ползователь" << std::endl;
+            std::cout << "\tР’РѕР№С‚Рё РєР°Рє Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ" << std::endl;
+            std::cout << "-->Р’РѕР№С‚Рё РєР°Рє РїРѕР»Р·РѕРІР°С‚РµР»СЊ" << std::endl;
             k = c;
             c = _getch();
         }
@@ -155,7 +163,7 @@ void SystemTesting::Start()
 }
 void SystemTesting::UserStart()
 {
-    std::cout << "Выбран режим пользователя" << std::endl;
+    std::cout << "Р’С‹Р±СЂР°РЅ СЂРµР¶РёРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ" << std::endl;
     int c = 119;
     int k;
     Sleep(2000);
@@ -164,16 +172,24 @@ void SystemTesting::UserStart()
         if (c == 119)
         {
             system("cls");
-            std::cout << "-->Войти в систему" << std::endl;
-            std::cout << "\tЗарегистрироваться" << std::endl;
+            std::cout << "-->Р’РѕР№С‚Рё РІ СЃРёСЃС‚РµРјСѓ" << std::endl;
+            std::cout << "\tР—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ" << std::endl;
             k = c;
             c = _getch();
         }
         else if (c == 115)
         {
             system("cls");
-            std::cout << "\tВойти в систему" << std::endl;
-            std::cout << "-->Зарегистрироваться" << std::endl;
+            std::cout << "\tР’РѕР№С‚Рё РІ СЃРёСЃС‚РµРјСѓ" << std::endl;
+            std::cout << "-->Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ" << std::endl;
+            k = c;
+            c = _getch();
+        }
+        else
+        {
+            system("cls");
+            std::cout << "-->Р’РѕР№С‚Рё РІ СЃРёСЃС‚РµРјСѓ" << std::endl;
+            std::cout << "\tР—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ" << std::endl;
             k = c;
             c = _getch();
         }
@@ -193,13 +209,13 @@ void SystemTesting::UserLog()
 {
     std::string login;
     std::string password;
-    std::cout << "Ведите логин: ";
+    std::cout << "Р’РµРґРёС‚Рµ Р»РѕРіРёРЅ: ";
     getline(std::cin, login);
-    std::cout << "Ведите пароль: ";
+    std::cout << "Р’РµРґРёС‚Рµ РїР°СЂРѕР»СЊ: ";
     getline(std::cin, password);
     if (!PersonInFile(login, password))
     {
-        std::cout << "Вход успешно выполнен" << std::endl;
+        std::cout << "Р’С…РѕРґ СѓСЃРїРµС€РЅРѕ РІС‹РїРѕР»РЅРµРЅ" << std::endl;
         Sleep(2000);
         system("cls");
         user.SetLog(login);
@@ -208,7 +224,7 @@ void SystemTesting::UserLog()
     }
     else
     {
-        std::cout << "Пользователь не найден.\n Попробуйте ещё раз." << std::endl;
+        std::cout << "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ.\n РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰С‘ СЂР°Р·." << std::endl;
         UserLog();
     }
 }
@@ -217,7 +233,7 @@ bool SystemTesting::PersonInFile(std::string login, std::string password)
     int countlog = 0;
     int countpass = 0;
     std::ifstream filelogin;
-    filelogin.open("C:\\Users\\Анна\\Desktop\\work\\login.txt");
+    filelogin.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\login.txt");
     if (filelogin.is_open())
     {
         std::string line;
@@ -233,11 +249,11 @@ bool SystemTesting::PersonInFile(std::string login, std::string password)
     }
     else
     {
-        std::cout << "Файл с логинами не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ Р»РѕРіРёРЅР°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     filelogin.close();
     std::ifstream filepass;
-    filepass.open("C:\\Users\\Анна\\Desktop\\work\\password.txt");
+    filepass.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\password.txt");
     if (filepass.is_open())
     {
         std::string line;
@@ -253,7 +269,7 @@ bool SystemTesting::PersonInFile(std::string login, std::string password)
     }
     else
     {
-        std::cout << "Файл с паролями не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ РїР°СЂРѕР»СЏРјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     if (countlog == countpass and countlog > 0)
     {
@@ -265,7 +281,7 @@ bool SystemTesting::PersonInFile(std::string login, std::string password)
 bool SystemTesting::ThereIsLog(std::string login)
 {
     std::ifstream filelogin;
-    filelogin.open("C:\\Users\\Анна\\Desktop\\work\\login.txt");
+    filelogin.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\login.txt");
     if (filelogin.is_open())
     {
         std::string line;
@@ -280,7 +296,7 @@ bool SystemTesting::ThereIsLog(std::string login)
     }
     else
     {
-        std::cout << "Файл с логинами не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ Р»РѕРіРёРЅР°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     filelogin.close();
     return true;
@@ -288,7 +304,7 @@ bool SystemTesting::ThereIsLog(std::string login)
 bool SystemTesting::ThereIsPass(std::string password)
 {
     std::ifstream filepass;
-    filepass.open("C:\\Users\\Анна\\Desktop\\work\\password.txt");
+    filepass.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\password.txt");
     if (filepass.is_open())
     {
         std::string line;
@@ -303,7 +319,7 @@ bool SystemTesting::ThereIsPass(std::string password)
     }
     else
     {
-        std::cout << "Файл с паролями не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ РїР°СЂРѕР»СЏРјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     filepass.close();
     return true;
@@ -351,14 +367,14 @@ long long User::GetPhone()
 void SystemTesting::Fillfile()
 {
     std::ofstream fileUser;
-    fileUser.open("C:\\Users\\Анна\\Desktop\\work\\userData.txt", std::ios::app);
+    fileUser.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\userData.txt", std::ios::app);
     if (fileUser.is_open())
     {
         fileUser << user.GetName() << " " << user.GetmiddleName() << " " << user.GetSurename() << " " << user.GetAdress() << " " << user.GetPhone() << "\n";
     }
     else
     {
-        std::cout << "Файл длоя записи данных не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» РґР»РѕСЏ Р·Р°РїРёСЃРё РґР°РЅРЅС‹С… РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     fileUser.close();
 }
@@ -367,18 +383,18 @@ void SystemTesting::RegistrationUsers()
     system("cls");
     std::string login;
     std::string password;
-    std::cout << "Придумайте логин: ";
+    std::cout << "РџСЂРёРґСѓРјР°Р№С‚Рµ Р»РѕРіРёРЅ: ";
     getline(std::cin, login);
-    std::cout << "Придумайте пароль: ";
+    std::cout << "РџСЂРёРґСѓРјР°Р№С‚Рµ РїР°СЂРѕР»СЊ: ";
     getline(std::cin, password);
     if (!ThereIsLog(login))
     {
-        std::cout << "Пользователь с таким логином уже сужествует.\nПридумайте новый логин." << std::endl;
+        std::cout << "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј Р»РѕРіРёРЅРѕРј СѓР¶Рµ СЃСѓР¶РµСЃС‚РІСѓРµС‚.\nРџСЂРёРґСѓРјР°Р№С‚Рµ РЅРѕРІС‹Р№ Р»РѕРіРёРЅ." << std::endl;
         RegistrationUsers();
     }
     else if (!ThereIsPass(password))
     {
-        std::cout << "Пользователь с таким паролем уже сужествует.\nПридумайте новый пароль." << std::endl;
+        std::cout << "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј РїР°СЂРѕР»РµРј СѓР¶Рµ СЃСѓР¶РµСЃС‚РІСѓРµС‚.\nРџСЂРёРґСѓРјР°Р№С‚Рµ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ." << std::endl;
         RegistrationUsers();
     }
     else
@@ -392,55 +408,55 @@ void SystemTesting::RegistrationUsers()
         char* Surename = new char[250] {};
         char* Adress = new char[250] {};
         long long phone;
-        std::cout << "Введите имя: " << std::endl;
+        std::cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ: " << std::endl;
         //std::cin.ignore();
         std::cin >> name;
         user.SetName(name);
-        std::cout << "Введите отчество: " << std::endl;
+        std::cout << "Р’РІРµРґРёС‚Рµ РѕС‚С‡РµСЃС‚РІРѕ: " << std::endl;
         std::cin.ignore();
         std::cin >> middleName;
         user.SetMiddleName(middleName);
-        std::cout << "Введите фамилию: " << std::endl;
+        std::cout << "Р’РІРµРґРёС‚Рµ С„Р°РјРёР»РёСЋ: " << std::endl;
         std::cin.ignore();
         std::cin >> Surename;
         user.SetSurename(Surename);
-        std::cout << "Введите адресс: " << std::endl;
+        std::cout << "Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃСЃ: " << std::endl;
         std::cin.ignore();
         std::cin >> Adress;
         user.SetAdress(Adress);
-        std::cout << "Номер телофона: " << std::endl;
+        std::cout << "РќРѕРјРµСЂ С‚РµР»РѕС„РѕРЅР°: " << std::endl;
         std::cin >> phone;
         user.SetPhonee(phone);
         Fillfile();
-        std::cout << "Регистрация прошла успешна." << std::endl;
+        std::cout << "Р РµРіРёСЃС‚СЂР°С†РёСЏ РїСЂРѕС€Р»Р° СѓСЃРїРµС€РЅР°." << std::endl;
         ShowProfile();
     }
 }
 void User::LogFill()
 {
     std::ofstream filelogin;
-    filelogin.open("C:\\Users\\Анна\\Desktop\\work\\login.txt", std::ios::app);
+    filelogin.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\login.txt", std::ios::app);
     if (filelogin.is_open())
     {
         filelogin << login << "\n";
     }
     else
     {
-        std::cout << "Файл с логинами не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ Р»РѕРіРёРЅР°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     filelogin.close();
 }
 void User::PassFill()
 {
     std::ofstream filepass;
-    filepass.open("C:\\Users\\Анна\\Desktop\\work\\password.txt", std::ios::app);
+    filepass.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\password.txt", std::ios::app);
     if (filepass.is_open())
     {
         filepass << password << "\n";
     }
     else
     {
-        std::cout << "Файл с логинами не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ Р»РѕРіРёРЅР°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     filepass.close();
 }
@@ -455,7 +471,7 @@ void User::SetPass(std::string password)
 int User::GetId()
 {
     std::ifstream filelogin;
-    filelogin.open("C:\\Users\\Анна\\Desktop\\work\\login.txt");
+    filelogin.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\login.txt");
     int id = 0;
     if (filelogin.is_open())
     {
@@ -472,15 +488,20 @@ int User::GetId()
     }
     else
     {
-        std::cout << "Файл с логинами не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ Р»РѕРіРёРЅР°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     filelogin.close();
     return -1;
 }
+std::string User::Getlogin()
+{
+    return login;
+}
 void Quiz::selectingSection()
 {
+    sections.clear();
     std::ifstream Sections;
-    Sections.open("C:\\Users\\Анна\\Desktop\\work\\sections.txt", std::ios::app);
+    Sections.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\sections.txt", std::ios::app);
     if (Sections.is_open())
     {
         std::string line;
@@ -494,62 +515,62 @@ void Quiz::selectingSection()
     }
     else
     {
-        std::cout << "Файл с разделами не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ СЂР°Р·РґРµР»Р°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
 }
 void Quiz::AddSect(std::string newSect)
 {
     std::ofstream Sections;
-    Sections.open("C:\\Users\\Анна\\Desktop\\work\\sections.txt", std::ios::app);
+    Sections.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\sections.txt", std::ios::app);
     if (Sections.is_open())
     {
         Sections << newSect << "\n";
     }
     else
     {
-        std::cout << "Файл для записи отделов не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё РѕС‚РґРµР»РѕРІ РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     Sections.close();
 }
 void Quiz::AddNameQuiz(std::string newName, char id)
 {
     std::ofstream Name;
-    Name.open("C:\\Users\\Анна\\Desktop\\work\\nameQuiz.txt", std::ios::app);
+    Name.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\nameQuiz.txt", std::ios::app);
     if (Name.is_open())
     {
         Name << id << newName << "\n";
     }
     else
     {
-        std::cout << "Файл для записи названий викторин не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё РЅР°Р·РІР°РЅРёР№ РІРёРєС‚РѕСЂРёРЅ РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     Name.close();
 }
 void Quiz::AddQuestions(std::string newQues, char id1, int id2)
 {
     std::ofstream Questions;
-    Questions.open("C:\\Users\\Анна\\Desktop\\work\\questions.txt", std::ios::app);
+    Questions.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\questions.txt", std::ios::app);
     if (Questions.is_open())
     {
         Questions << id1 << id2 << newQues << "\n";
     }
     else
     {
-        std::cout << "Файл для записи вопросов не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё РІРѕРїСЂРѕСЃРѕРІ РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     Questions.close();
 }
 void Quiz::AddAnswers(std::string newAnswer, char id1, int id2)
 {
     std::ofstream Questions;
-    Questions.open("C:\\Users\\Анна\\Desktop\\work\\answer.txt", std::ios::app);
+    Questions.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\answer.txt", std::ios::app);
     if (Questions.is_open())
     {
         Questions << id1 << id2 << newAnswer << "\n";
     }
     else
     {
-        std::cout << "Файл для записи ответов не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё РѕС‚РІРµС‚РѕРІ РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     Questions.close();
 }
@@ -560,9 +581,9 @@ void Quiz::makeQuiz() {
     std::string nameQuiz;
     std::string questions;
     std::string answers;
-    int count = 0;//номер раздела
+    int count = 0;//РЅРѕРјРµСЂ СЂР°Р·РґРµР»Р°
     selectingSection();
-    std::cout << "Выберите раздел: " << std::endl;
+    std::cout << "Р’С‹Р±РµСЂРёС‚Рµ СЂР°Р·РґРµР»: " << std::endl;
     std::cout << std::endl;
     for (auto line : sections)
     {
@@ -570,22 +591,22 @@ void Quiz::makeQuiz() {
         std::cout << count << " " << line << std::endl;
     }
     count++;
-    std::cout << count << " Добавить новый раздел" << std::endl;
+    std::cout << count << " Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ СЂР°Р·РґРµР»" << std::endl;
     std::cout << std::endl;
-    std::cout << "Ваш выбор: ";
+    std::cout << "Р’Р°С€ РІС‹Р±РѕСЂ: ";
     std::cin >> choise;
     std::cout << std::endl;
     count = static_cast<int>(choise) - 48;
     if (sections.size() + 1 == count)
     {
         std::string newSect;
-        std::cout << "Введите название нового раздела: ";
+        std::cout << "Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РЅРѕРІРѕРіРѕ СЂР°Р·РґРµР»Р°: ";
         std::cin.ignore();
         getline(std::cin, newSect);
         AddSect(newSect);
     }
     std::cout << std::endl;
-    std::cout << "Введите название теста: ";
+    std::cout << "Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С‚РµСЃС‚Р°: ";
     std::cin.ignore();
     getline(std::cin, nameQuiz);
     AddNameQuiz(nameQuiz, choise);
@@ -597,28 +618,28 @@ void Quiz::makeQuiz() {
     {
         std::cout << std::endl;
         countQues++;
-        std::cout << "Введите вопрос: ";
+        std::cout << "Р’РІРµРґРёС‚Рµ РІРѕРїСЂРѕСЃ: ";
         getline(std::cin, questions);
         AddQuestions(questions, choise, id1);
         std::cout << std::endl;
-        std::cout << "Введите ответ: ";
+        std::cout << "Р’РІРµРґРёС‚Рµ РѕС‚РІРµС‚: ";
         getline(std::cin, answers);
         AddAnswers(answers, choise, id1);
         std::cout << std::endl;
         system("cls");
-        std::cout << "Чтобы завершить ввод вопросов нажмите пробел." << std::endl;
+        std::cout << "Р§С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ РІРІРѕРґ РІРѕРїСЂРѕСЃРѕРІ РЅР°Р¶РјРёС‚Рµ РїСЂРѕР±РµР»." << std::endl;
         std::cout << std::endl;
         count = _getch();
 
     }
-    std::cout << "Тест успешно создан." << std::endl;
+    std::cout << "РўРµСЃС‚ СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅ." << std::endl;
     Sleep(2000);
     system("cls");
 }
 int Quiz::numTest(char id)
 {
     std::ifstream NameTest;
-    NameTest.open("C:\\Users\\Анна\\Desktop\\work\\nameQuiz.txt");
+    NameTest.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\nameQuiz.txt");
     int Id = 0;
     if (NameTest.is_open())
     {
@@ -636,11 +657,246 @@ int Quiz::numTest(char id)
     }
     else
     {
-        std::cout << "Файл с названиями не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ РЅР°Р·РІР°РЅРёСЏРјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     NameTest.close();
     return Id;
 }
+void Quiz::choiceTest()
+{
+    system("cls");
+    selectingSection();
+    std::cout << "Р’С‹Р±РµСЂРёС‚Рµ СЂР°Р·РґРµР»: " << std::endl;
+    std::cout << std::endl;
+    int count = 1;
+    for (auto line : sections)
+    {
+        std::cout << count << " " << line << std::endl;
+        count++;
+    }
+    std::cout << "Р’Р°С€ РІС‹Р±РѕСЂ: ";
+    char chois;
+    std::cin >> chois;
+    std::cout << std::endl;
+    system("cls");
+    std::ifstream NameTest;
+    NameTest.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\nameQuiz.txt");
+    count = 1;
+    int id = 0;
+    if (NameTest.is_open())
+    {
+        std::string line;
+        while (std::getline(NameTest, line))
+        {
+            if (chois == line[0])
+            {
+                nameQuiz.push_back(line.erase(0, 1));
+            }
+        }
+    }
+    else
+    {
+        std::cout << "Р¤Р°Р№Р» СЃ РЅР°Р·РІР°РЅРёСЏРјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
+    }
+    NameTest.close();
+    for (auto line : nameQuiz)
+    {
+        std::cout << count << " " << line << std::endl;
+        count++;
+    }
+    std::cout << "Р’Р°С€ РІС‹Р±РѕСЂ: ";
+    char chois2;
+    std::cin >> chois2;
+    system("cls");
+    Test(chois, chois2);
+}
+int Quiz::determineScore(double pr)
+{
+
+    if (pr == 100)
+    {
+        return 12;
+    }
+    else if (pr >= 95)
+    {
+        return 11;
+    }
+    else if (pr >= 90)
+    {
+        return 10;
+    }
+    else if (pr >= 85)
+    {
+        return 9;
+    }
+    else if (pr >= 80)
+    {
+        return 8;
+    }
+    else if (pr >= 70)
+    {
+        return 7;
+    }
+    else if (pr >= 60)
+    {
+        return 6;
+    }
+    else if (pr >= 50)
+    {
+        return 5;
+    }
+    else if (pr >= 40)
+    {
+        return 4;
+    }
+    else if (pr >= 30)
+    {
+        return 3;
+    }
+    else if (pr >= 20)
+    {
+        return 2;
+    }
+    else if (pr >= 10)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+
+}
+void Quiz::ShowAnswers()
+{
+    int count = 0;
+    system("cls");
+    for (auto ques : questions)
+    {
+        std::cout << count + 1 << ". " << ques << std::endl;
+        std::cout << std::endl;
+        std::cout << "Р’Р°С€ РѕС‚РІРµС‚: " << useranswer[count] << std::endl;
+        if (answerRT[count])
+        {
+
+            std::cout << "Р’РµСЂРЅС‹Р№ РѕС‚РІРµС‚." << std::endl;
+        }
+        else
+        {
+            std::cout << "РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ РѕС‚РІРµС‚." << std::endl;
+            std::cout << "Р’РµСЂРЅС‹Р№ РѕС‚РІРµС‚." <<answers[count]<< std::endl;
+        }
+        count++;
+    }
+    std::cout << "РќР°Р¶РјРёРµС‚ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ, С‡С‚РѕР±С‹ РІРµСЂРЅСѓС‚СЊСЃСЏ РІ Р°РєРєР°СѓРЅС‚." << std::endl;
+    count = _getch();
+}
+void Quiz::SaveInterTesting(char id1, char id2)
+{
+    std::ofstream filelogin;
+    filelogin.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\InterTesting.txt", std::ios::app);
+    if (filelogin.is_open())
+    {
+        filelogin <<login<< " "<<id1<< " " << id2<<" ";
+        for (auto ans: useranswer)
+        {
+            filelogin <<ans<< " ";
+        }
+        filelogin<<"0all0" << "\n";
+    }
+    else
+    {
+        std::cout << "Р¤Р°Р№Р» СЃ Р»РѕРіРёРЅР°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
+    }
+    filelogin.close();
+}
+void Quiz::Selogin(std::string login)
+{
+    this->login = login;
+}
+void Quiz::ShowfinishTest()
+{
+    int count = 0;
+    std::vector<std::string> id1;
+    std::vector<std::string> id2;
+    std::ifstream Sections;
+    std::ifstream NameTest;
+    NameTest.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\nameQuiz.txt");
+    Sections.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\InterTesting.txt");
+    if (Sections.is_open())
+    {
+        std::string line;
+        Sections >> line;
+        std::cout << line << std::endl;
+        while (!Sections.eof())
+        {
+            if (line==login)
+            {
+                count++;
+                Sections >> line;
+                std::cout << line << std::endl;
+                id1.push_back(line);
+                Sections >> line;
+                std::cout << line << std::endl;
+                id2.push_back(line);
+                Sections >> line;
+                std::cout << line << std::endl;
+                while (line!="0all0")
+                {
+                    useranswer.push_back(line);
+                    Sections >> line;
+                    std::cout << line << std::endl;
+
+                }
+                selectingSection();
+                std::cout<<count << ". Р Р°Р·РґРµР»: " << sections[stoi(id1.back())]<<std::endl;
+                int countname = 0;
+                if (NameTest.is_open())
+                {
+                    std::string name;
+                    while (std::getline(NameTest, name))
+                    {
+                        
+                        if ((stoi(id1.back()) == static_cast<int>(name[0])) )
+                        {
+                            countname++;
+                            if ((stoi(id2.back()) == countname))
+                            {
+                                std::cout << name << std::endl;
+                                break;
+                            }
+                            
+                        }
+                    }
+                }
+                else
+                {
+                    std::cout << "Р¤Р°Р№Р» СЃ РЅР°Р·РІР°РЅРёСЏРјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
+                }
+            }
+            Sections >> line;
+        }
+    }
+    else
+    {
+        std::cout << "Р¤Р°Р№Р» СЃ СЂР°Р·РґРµР»Р°РјРё РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
+    }
+    Sections.close();
+    NameTest.close();
+    if (count==0)
+    {
+        std::cout << "РЈ РІР°СЃ РЅРµС‚ РЅРµР·Р°РІРµСЂС€С‘РЅРЅС‹С… С‚РµСЃС‚РѕРІ." << std::endl;
+    }
+    else
+    {
+        std::cout << "РљР°РєРѕР№ С‚РµСЃС‚ РїСЂРѕРґРѕР»Р¶РёС‚СЊ СЂРµС€Р°С‚СЊ? ";
+        int chois2;
+        std::cin >> chois2;
+        system("cls");
+        Test(id1[chois2 - 1][0], id2[chois2 - 1][0]);
+    }
+}
+
 
 void SystemTesting::AdminLogin()
 {
@@ -648,12 +904,13 @@ void SystemTesting::AdminLogin()
 
 void SystemTesting::ShowProfile()
 {
+    int chois;
     system("cls");
     std::ifstream fileUser;
-    fileUser.open("C:\\Users\\Анна\\Desktop\\work\\userData.txt", std::ios::app);
+    fileUser.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\userData.txt", std::ios::app);
     if (fileUser.is_open())
     {
-        std::cout << "Информация о пользователи." << std::endl;
+        std::cout << "РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рё." << std::endl;
         int id = user.GetId();
         id = id * 5;
         if (id > -1)
@@ -666,17 +923,17 @@ void SystemTesting::ShowProfile()
                 if (count == id)
                 {
                     std::cout << std::endl;
-                    std::cout << "ФИО пользователя:" << line << " ";
+                    std::cout << "Р¤РРћ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:" << line << " ";
                     fileUser >> line;
                     std::cout << line << " ";
                     fileUser >> line;
                     std::cout << line << " " << std::endl;
                     fileUser >> line;
                     std::cout << std::endl;
-                    std::cout << "Адресс пользователя:" << line << std::endl;
+                    std::cout << "РђРґСЂРµСЃСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:" << line << std::endl;
                     fileUser >> line;
                     std::cout << std::endl;
-                    std::cout << "Телефон пользователя:" << line << std::endl;
+                    std::cout << "РўРµР»РµС„РѕРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:" << line << std::endl;
                     break;
                 }
                 count++;
@@ -684,164 +941,155 @@ void SystemTesting::ShowProfile()
         }
         else
         {
-            std::cout << "Ошибка! id не найден.";
+            std::cout << "РћС€РёР±РєР°! id РЅРµ РЅР°Р№РґРµРЅ.";
         }
         std::cout << std::endl;
-        std::cout << "Статистика пользователя." << std::endl;
+        std::cout << "РЎС‚Р°С‚РёСЃС‚РёРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ." << std::endl;
         std::cout << std::endl;
-        std::cout << "Выбрать тестирование. Нажмите Enter." << std::endl;
+        std::cout << "Р’С‹Р±СЂР°С‚СЊ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ. РќР°Р¶РјРёС‚Рµ Enter." << std::endl;
+        std::cout << "Р’С‹Р№С‚Рё РёР· Р°РєРєР°СѓРЅС‚Р°. РќР°Р¶РјРёС‚Рµ РїСЂРѕР±РµР»." << std::endl;
+        std::cout << "Р”РѕСЂРµС€Р°С‚СЊ РЅРµР°РєРѕРЅС‡РµРЅРЅС‹Рµ С‚РµСЃС‚С‹. РЅР°Р¶РјРёС‚Рµ q." << std::endl;
+        quiz.Selogin(user.Getlogin());
+        chois = _getch();
+        if (chois==13)
+        {
+          
+            quiz.choiceTest();
+            system("cls");
+            ShowProfile();
+        }
+        else if (chois==32)
+        {
+            Start();
+        }
+        else if(chois == 113)
+        {
+            system("cls");
+            quiz.ShowfinishTest();
+            system("cls");
+            ShowProfile();
+        }
+        }
+        else
+        {
+            system("cls");
+            ShowProfile();
+        }
     }
     else
     {
-        std::cout << "Файл для записи данных не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё РґР°РЅРЅС‹С… РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     fileUser.close();
 
 }
 
-void Quiz::choiceTest()
-{
-    selectingSection();
-    std::cout << "Выберите раздел: " << std::endl;
-    std::cout << std::endl;
-    int count = 1;
-    for (auto line : sections)
-    {
-        std::cout << count << " " << line << std::endl;
-        count++;
-    }
-    std::cout << "Ваш выбор: ";
-    char chois;
-    std::cin >> chois;
-    std::cout << std::endl;
-    system("cls");
-    std::ifstream NameTest;
-    NameTest.open("C:\\Users\\Анна\\Desktop\\work\\nameQuiz.txt");
-    count = 1;
-    int id = 0;
-    if (NameTest.is_open())
-    {
-        std::string line;
-        while (std::getline(NameTest, line))
-        {
-            if (chois == line[0])
-            {
-                std::cout << count << " " << line.erase(0, 1) << std::endl;
-                count++;
-            }
-        }
-    }
-    else
-    {
-        std::cout << "Файл с названиями не открылся" << std::endl;
-    }
-    NameTest.close();
-    std::cout << "Ваш выбор: ";
-    char chois2;
-    std::cin >> chois2;
-    system("cls");
-    Test(chois, chois2);
-}
 void Quiz::Test(char id1, char id2)
 {
+    
     int right = 0;
     int fals = 0;
+    int count = 0;
+    int x = 0;
     system("cls");
     std::ifstream Question;
-    Question.open("C:\\Users\\Анна\\Desktop\\work\\question.txt");
+    Question.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\questions.txt");
     std::ifstream Answer;
-    Answer.open("C:\\Users\\Анна\\Desktop\\work\\answer.txt");
-    int count = 1;
-    if (Question.is_open() and Answer.is_open())
+    Answer.open("C:\\Users\\РђРЅРЅР°\\Desktop\\work\\answer.txt");
+    if (Question.is_open())
     {
         std::string line;
-        std::string answer;
-        std::string line1;
-        while (std::getline(Question, line) and std::getline(Answer, line1))
+        while (std::getline(Question, line))
         {
-            if (id1 == line[0] and id2 == line[1] and id1 == line1[0] and id2 == line1[1])
+            if (id1 == line[0] and id2 == line[1])
             {
-                std::cout << count << " " << line.erase(0, 2) << std::endl;
-                count++;
-                std::cout << "Ваш ответ: " << std::endl;
-                std::cin >> answer;
-                if (answer == line1)
-                {
-                    std::cout << "Верно. " << std::endl;
-                    right++;
-                }
-                else
-                {
-                    std::cout << "Неправильно.  " << std::endl;
-                    fals++;
-                }
-                system("cls");
+                questions.push_back(line.erase(0, 2));
             }
         }
     }
     else
     {
-        std::cout << "Файл с названиями не открылся" << std::endl;
+        std::cout << "Р¤Р°Р№Р» СЃ РІРѕРїСЂРѕСЃР°РјРё  РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
     Question.close();
-    Answer.close();
-    int score = determineScore(right, fals);
-    std::cout << "Ваша оценка: " << score << std::endl;
-}
-int Quiz::determineScore(int r, int f)
-{
-    int all = r + f;
-    if (all == r)
+    if (Answer.is_open())
     {
-        return 12;
-    }
-    else if (all * 0.95 >= r)
-    {
-        return 11;
-    }
-    else if (all * 0.9 >= r)
-    {
-        return 10;
-    }
-    else if (all * 0.80 >= r)
-    {
-        return 9;
-    }
-    else if (all * 0.75 >= r)
-    {
-        return 8;
-    }
-    else if (all * 0.70 >= r)
-    {
-        return 7;
-    }
-    else if (all * 0.6 >= r)
-    {
-        return 6;
-    }
-    else if (all * 0.55 >= r)
-    {
-        return 5;
-    }
-    else if (all * 0.50 >= r)
-    {
-        return 4;
-    }
-    else if (all * 0.40 >= r)
-    {
-        return 3;
-    }
-    else if (all * 0.30 >= r)
-    {
-        return 2;
-    }
-    else if (all * 0.20 >= r)
-    {
-        return 1;
+        std::string line;
+        while (std::getline(Answer, line))
+        {
+            if (id1 == line[0] and id2 == line[1])
+            {
+                answers.push_back(line.erase(0, 2));
+            }
+        }
     }
     else
     {
-        return 0;
+        std::cout << "Р¤Р°Р№Р» СЃ РѕС‚РІРµС‚Р°РјРё  РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << std::endl;
     }
+    Answer.close();
 
+    system("cls");
+    std::string answ;
+    std::cin.ignore();
+    for (auto ques: questions)
+    {
+        system("cls");
+        std::cout << count + 1 <<". " << ques << std::endl;
+        std::cout << "Р’РµРґРёС‚Рµ РІР°С€ РѕС‚РІРµС‚: ";
+        std::getline(std::cin, answ);
+        if (answ==answers[count])
+        {
+            std::cout << "Р’РµСЂРЅРѕ." << std::endl;
+            Sleep(2000);
+            right++;
+          
+            answerRT.push_back(true);
+            system("cls");
+        }
+        else
+        {
+            std::cout << "РќРµРїСЂР°РІРёР»СЊРЅРѕ." << std::endl;
+            Sleep(2000);
+            fals++;
+            answerRT.push_back(false);
+            system("cls");
+        }
+        count++;
+        useranswer.push_back(answ);
+        std::cout << "Р•СЃР»Рё С…РѕС‚РёС‚Рµ РїСЂРµСЂРІР°С‚СЊ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РЅР°Р¶РјРёС‚Рµ РїСЂРѕР±РµР»." << std::endl;
+        std::cout << "Р§С‚РѕР±С‹ РїСЂРѕРґРѕР»Р¶РёС‚СЊ РЅР°Р¶РјРёС‚Рµ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ." << std::endl;
+        x = _getch();
+     
+        if (x==32)
+        {
+            SaveInterTesting(id1,id2);
+            break;
+        }
+        else
+        {
+            continue;
+        }
+      
+    }
+    if (x!=13)
+    {
+        int all = right + fals;
+        double pr = (right * 100) / all;
+        int score = determineScore(pr);
+        std::cout << "РџСЂР°РІРёР»СЊРЅРѕ РѕС‚РІРµС‡РµРЅРЅРѕ " << right << " РёР· " << all << std::endl;
+        std::cout << "РџСЂРѕС†РµРЅС‚ РїСЂР°РІРёР»СЊРЅРѕ СЂРµС€С‘РЅРЅС‹С… РІРѕРїСЂРѕСЃРѕРІ: " << pr << "%" << std::endl;
+        std::cout << "Р’Р°С€Р° РѕС†РµРЅРєР°: " << score << std::endl;
+        std::cout << "Р§С‚РѕР±С‹ СЃСЂР°РЅРёС‚СЊ РѕС‚РІРµС‚С‹ РЅР°Р¶РјРёС‚Рµ Enter." << std::endl;
+        std::cout << "РќР°Р¶РјРёРµС‚ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ, С‡С‚РѕР±С‹ РІРµСЂРЅСѓС‚СЊСЃСЏ РІ Р°РєРєР°СѓРЅС‚." << std::endl;
+        count = _getch();
+        if (count == 13)
+        {
+            ShowAnswers();
+        }
+    }
+    useranswer.clear();
+    answerRT.clear();
+    answers.clear();
+    questions.clear();
 }
