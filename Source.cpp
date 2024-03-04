@@ -90,6 +90,10 @@ public:
     void DeleteUser(int k =0);
     void ChangeUser();
 
+    void showAdminProfil();
+    void showStatistic();
+    void DeleteUser();
+    void ChangeUser();
 private:
     User user;
     Quiz quiz;
@@ -609,7 +613,7 @@ void Quiz::makeQuiz() {
     }
     std::cout << std::endl;
     std::cout << "Введите название теста: ";
-    std::cin.ignore();
+   std::cin.ignore();
     getline(std::cin, nameQuiz);
     AddNameQuiz(nameQuiz, choise);
     count = 0;
