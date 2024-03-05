@@ -5,36 +5,37 @@
 #include <conio.h>
 #include <direct.h>
 #include <fstream>
-//не слитывает решеннынеот веты,  шифровка
+//не слитывает решеннынеот веты,  шифровка, удаление теста, выводит 2 раза если 1
 class User
 {
 public:
-    User(char* name, char* middleName, char* Surename, char* Adress, long long phone) :
-        name{ name }, middleName{ middleName }, Surename{ Surename }, Adress{ Adress }, phone{ phone } {}
+    User(char* name, char* middleName, char* Surename, char* Adress) :
+        name{ name }, middleName{ middleName }, Surename{ Surename }, Adress{ Adress }{}
     User() : phone{ 0 } {}
     void SetName(char* name);
     void SetMiddleName(char* middleName);
     void SetSurename(char* Surename);
     void SetAdress(char* Adress);
-    void SetPhonee(long long phone);
+    void SetPhonee(char*  phone);
     char* GetName();
     char* GetmiddleName();
     char* GetSurename();
     char* GetAdress();
-    long long GetPhone();
+    char* GetPhone();
     void SetLog(std::string login);
     void SetPass(std::string password);
     void LogFill();
     void PassFill();
     int GetId();
-    std::string Getlogin();
     void Fillfile();
+    std::string Getlogin();
+
 private:
     char* name;
     char* middleName;
     char* Surename;
     char* Adress;
-    long long phone;
+    char* phone;
     std::string login;
     std::string password;
 };
@@ -57,7 +58,7 @@ public:
     void ShowfinishTest();
     void saveStatic(char id1, char id2, int all, int right);
     void showStatic();
-    void deleteFinishTest(char id1, char id2 );
+    void deleteFinishTest(char id1, char id2);
     void deleteTest();
 private:
     std::vector<std::string> sections;
@@ -85,18 +86,15 @@ public:
     void ShowProfile();
     void makeFile();
     void showAdminProfil();
+    void showStatistic();
+    void DeleteUser(int k =0);
+    void ChangeUser();
+
 private:
     User user;
     Quiz quiz;
     int r;
 };
-
-//• Просмотр статистики – просмотр результатов тестирования в общем
-//по категориям, по конкретным тестам, по конкретным пользователям.
-//Результаты просмотра статистики можно вывести в файл.
-
-
-
 
 int main()
 {
@@ -154,10 +152,10 @@ void SystemTesting::Start()
     {
         UserStart();
     }
-    else if(k==119)
+    else if (k == 119)
     {
         AdminLogin();
-    }  
+    }
 }
 void SystemTesting::UserStart()
 {
@@ -231,7 +229,7 @@ bool SystemTesting::PersonInFile(std::string login, std::string password)
     int countlog = 0;
     int countpass = 0;
     bool flaglog = true;
-    bool flagpass= true;
+    bool flagpass = true;
     std::ifstream filelogin;
     filelogin.open("C:\\ProgramData\\Testing Sestem\\login.txt");
     if (filelogin.is_open())
@@ -342,7 +340,7 @@ void User::SetAdress(char* Adress)
 {
     this->Adress = Adress;
 }
-void User::SetPhonee(long long phone)
+void User::SetPhonee(char*  phone)
 {
     this->phone = phone;
 }
@@ -362,17 +360,17 @@ char* User::GetAdress()
 {
     return Adress;
 }
-long long User::GetPhone()
+char* User::GetPhone()
 {
     return phone;
 }
-void SystemTesting::Fillfile()
+void User::Fillfile()
 {
     std::ofstream fileUser;
     fileUser.open("C:\\ProgramData\\Testing Sestem\\userData.txt", std::ios::app);
     if (fileUser.is_open())
     {
-        fileUser << user.GetName() << " " << user.GetmiddleName() << " " << user.GetSurename() << " " << user.GetAdress() << " " << user.GetPhone() << "\n";
+        fileUser << name << " " << middleName << " " << Surename << " " << Adress << " " << phone << "\n";
     }
     else
     {
@@ -386,6 +384,7 @@ void SystemTesting::RegistrationUsers()
     std::string login;
     std::string password;
     std::cout << "Придумайте логин: ";
+    std::cin.ignore();
     getline(std::cin, login);
     std::cout << "Придумайте пароль: ";
     getline(std::cin, password);
@@ -409,7 +408,7 @@ void SystemTesting::RegistrationUsers()
         char* middleName = new char[250] {};
         char* Surename = new char[250] {};
         char* Adress = new char[250] {};
-        long long phone;
+        char* phone = new char[250] {};
         std::cout << "Введите имя: " << std::endl;
         //std::cin.ignore();
         std::cin >> name;
@@ -429,7 +428,7 @@ void SystemTesting::RegistrationUsers()
         std::cout << "Номер телофона: " << std::endl;
         std::cin >> phone;
         user.SetPhonee(phone);
-        Fillfile();
+        user.Fillfile();
         std::cout << "Регистрация прошла успешна." << std::endl;
         ShowProfile();
     }
@@ -615,7 +614,7 @@ void Quiz::makeQuiz() {
     AddNameQuiz(nameQuiz, choise);
     count = 0;
     int id1 = numTest(choise);
-    if (id1==0)
+    if (id1 == 0)
     {
         id1 = 1;
     }
@@ -792,7 +791,7 @@ void Quiz::ShowAnswers()
         else
         {
             std::cout << "Неправильный ответ." << std::endl;
-            std::cout << "Верный ответ." <<answers[count]<< std::endl;
+            std::cout << "Верный ответ." << answers[count] << std::endl;
         }
         count++;
         std::cout << std::endl;
@@ -806,12 +805,12 @@ void Quiz::SaveInterTesting(char id1, char id2)
     filelogin.open("C:\\ProgramData\\Testing Sestem\\InterTesting.txt", std::ios::app);
     if (filelogin.is_open())
     {
-        filelogin <<login<< " "<<id1<< " " << id2<<" ";
-        for (auto ans: useranswer)
+        filelogin << login << " " << id1 << " " << id2 << " ";
+        for (auto ans : useranswer)
         {
-            filelogin <<ans<< " ";
+            filelogin << ans << " ";
         }
-        filelogin<<"0all0" << "\n";
+        filelogin << "0all0" << "\n";
     }
     else
     {
@@ -831,7 +830,7 @@ void Quiz::ShowfinishTest()
     std::vector<std::string> id2;
     std::ifstream Sections;
     std::ifstream NameTest;
-   
+
     Sections.open("C:\\ProgramData\\Testing Sestem\\InterTesting.txt");
     if (Sections.is_open())
     {
@@ -839,7 +838,7 @@ void Quiz::ShowfinishTest()
         Sections >> line;
         while (!Sections.eof())
         {
-            if (line==login)
+            if (line == login)
             {
                 count++;
                 Sections >> line;
@@ -847,7 +846,7 @@ void Quiz::ShowfinishTest()
                 Sections >> line;
                 id2.push_back(line);
                 Sections >> line;
-                while (line!="0all0")
+                while (line != "0all0")
                 {
                     useranswer.push_back(line);
                     Sections >> line;
@@ -855,7 +854,7 @@ void Quiz::ShowfinishTest()
 
                 }
                 selectingSection();
-                std::cout<<count << ". Раздел: " << sections[stoi(id1.back())-1];
+                std::cout << count << ". Раздел: " << sections[stoi(id1.back()) - 1];
                 int countname = 0;
                 NameTest.open("C:\\ProgramData\\Testing Sestem\\nameTest.txt");
                 if (NameTest.is_open())
@@ -863,16 +862,16 @@ void Quiz::ShowfinishTest()
                     std::string name;
                     while (std::getline(NameTest, name))
                     {
-                      
+
                         if ((stoi(id1.back()) == (static_cast<int>(name[0])) - 48))
                         {
                             countname++;
                             if ((stoi(id2.back()) == countname))
                             {
-                               std::cout <<" тест: " << name.erase(0, 1) << std::endl;
+                                std::cout << " тест: " << name.erase(0, 1) << std::endl;
                                 break;
                             }
-                            
+
                         }
                     }
                 }
@@ -891,9 +890,9 @@ void Quiz::ShowfinishTest()
     }
     Sections.close();
 
-    if (count==0)
+    if (count == 0)
     {
-        std::cout << "У вас нет незавершённых тестов." << std::endl; 
+        std::cout << "У вас нет незавершённых тестов." << std::endl;
         Sleep(2000);
     }
     else
@@ -902,8 +901,8 @@ void Quiz::ShowfinishTest()
         int chois2;
         std::cin >> chois2;
         system("cls");
-        Test(id1[chois2 - 1][0], id2[chois2 - 1][0],k );
-        deleteFinishTest(id1[chois2 - 1][0], id2[chois2 - 1][0] );
+        Test(id1[chois2 - 1][0], id2[chois2 - 1][0], k);
+        deleteFinishTest(id1[chois2 - 1][0], id2[chois2 - 1][0]);
     }
 }
 void Quiz::deleteFinishTest(char id1, char id2)
@@ -963,7 +962,7 @@ void Quiz::deleteFinishTest(char id1, char id2)
     }
     Sections.close();
     std::ofstream InterTesting;
-    InterTesting.open("C:\\ProgramData\\Testing Sestem\\InterTesting.txt");
+    InterTesting.open("C:\\ProgramData\\Testing Sestem\\InterTesting.txt", std::ios::trunc);
     if (InterTesting.is_open())
     {
         for (auto str : data)
@@ -1231,24 +1230,26 @@ void Quiz::Test(char id1, char id2, int k)
     std::string answ = "";
     std::cin.ignore();
     int count = 0;
-   /* if (k!=0)    не работает!!!!!!!
-    {
-        for (auto ans: useranswer) {
-            if (ans== answers[count])
-            {
-                right++;
-                answerRT.push_back(true);
-            }
-            else
-            {
-                fals++;
-                answerRT.push_back(false);
-            }
-            count++;
-        }      
-            
-    }*/
-    while (count<questions.size())
+    //////////////////
+     if (k!=0)   
+     {
+         for (auto ans: useranswer) {
+             if (ans== answers[count])
+             {
+                 right++;
+                 answerRT.push_back(true);
+             }
+             else
+             {
+                 fals++;
+                 answerRT.push_back(false);
+             }
+             count++;
+         }
+
+     }
+     //////////////////
+    while (count < questions.size())
     {
         std::cout << "Если хотите прервать тестирование нажмите пробел." << std::endl;
         std::cout << "Чтобы продолжить нажмите любую клавишу." << std::endl;
@@ -1281,30 +1282,30 @@ void Quiz::Test(char id1, char id2, int k)
         }
         count++;
         useranswer.push_back(answ);
-        
+
 
     }
-    if (x!=32)
+    if (x != 32)
     {
         int all = 1;
         double pr;
         try
         {
-            if (all==0)
+            if (all == 0)
             {
                 throw 0;
             }
             else
             {
-                 pr = (right * 100) / all;
+                pr = (right * 100) / all;
             }
         }
         catch (int error)
         {
-            if (error ==0)
+            if (error == 0)
             {
                 std::cout << "Деление на ноль.ответы не посчитались." << std::endl;
-            }         
+            }
         }
         all = right + fals;
         pr = pr / all;
@@ -1356,15 +1357,15 @@ void SystemTesting::AdminLogin()
         }
         else {
             std::string str;
-            std::cout<<"Введите логин: ";
+            std::cout << "Введите логин: ";
             std::getline(std::cin, str);
             file >> login;
             file >> password;
-            if (login==str)
+            if (login == str)
             {
                 std::cout << "Введите пароль: ";
                 std::getline(std::cin, str);
-                if (password==str)
+                if (password == str)
                 {
                     showAdminProfil();
                 }
@@ -1388,61 +1389,6 @@ void SystemTesting::AdminLogin()
         std::cout << "Файл с данными администратора не открылся" << std::endl;
     }
     file.close();
-    
-}
-void SystemTesting::showAdminProfil()
-{
-    system("cls");
-    int chois;
-    std::cout << "Выберите функцию." << std::endl;
-    std::cout<< std::endl;
-    std::cout << "1. Удалить пользователя." << std::endl;
-    std::cout << std::endl;
-    std::cout << "2. Создать пользователя." << std::endl;
-    std::cout << std::endl;
-    std::cout << "3. Модифицировать пользователя." << std::endl;
-    std::cout << std::endl;
-    std::cout << "4. Изменить логин//пароль." << std::endl;
-    std::cout << std::endl;
-    std::cout << "5. Создать тест." << std::endl;
-    std::cout << std::endl;
-    std::cout << "6. Просмотр статистики" << std::endl;
-    std::cout << std::endl;
-    std::cout << "7. Удаление теста." << std::endl;
-    std::cout  << std::endl;
-    std::cout << "8. Выйти из режима администратора." << std::endl;
-    std::cout << std::endl;
-    std::cin >> chois;
-    switch (chois)
-    {
-    case 1:
-        break;
-    case 2:
-        break;
-    case 3:
-        break;
-    case 4:
-        break;
-    case 5:
-        system("cls");
-        quiz.makeQuiz();
-        showAdminProfil();
-        break;
-    case 6:
-        
-        break;
-    case 7:
-        system("cls");
-        quiz.deleteTest();
-        showAdminProfil();
-        break;
-    case 8:
-        system("cls");
-        Start();
-        break;
-    default:
-        break;
-    }
 
 }
 void Quiz::deleteTest()
@@ -1467,14 +1413,14 @@ void Quiz::deleteTest()
     Name.close();
     for (auto sect : sections)
     {
-        std::cout <<count<< "Раздел: "<<sect<<std::endl;
+        std::cout << count << "Раздел: " << sect << std::endl;
         for (auto name : nameQuiz)
         {
             if ((static_cast<int>(name[0]) - 48) == count)
             {
-                std::cout<<countname <<". " << name.erase(0, 1)<<std::endl;
+                std::cout << countname << ". " << name.erase(0, 1) << std::endl;
                 countname++;
-            }          
+            }
         }
         countname = 1;
         count++;
@@ -1492,15 +1438,22 @@ void Quiz::deleteTest()
         std::string line;
         while (std::getline(Namet, line))
         {
-            if ((static_cast<int>(line[0]) - 48) == count )
+            if ((static_cast<int>(line[0]) - 48) == count)
             {
                 if (x == countname)
                 {
                     continue;
                 }
+                else
+                {
+                    nameQuiz.push_back(line);
+                }
                 x++;
             }
-            nameQuiz.push_back(line);
+            else
+            {
+                nameQuiz.push_back(line);
+            }    
         }
     }
     else
@@ -1509,7 +1462,7 @@ void Quiz::deleteTest()
     }
     Namet.close();
     std::ofstream name;
-    name.open("C:\\ProgramData\\Testing Sestem\\nameTest.txt");
+    name.open("C:\\ProgramData\\Testing Sestem\\nameTest.txt", std::ios::trunc);
     if (name.is_open())
     {
         for (auto str : nameQuiz)
@@ -1523,6 +1476,7 @@ void Quiz::deleteTest()
     }
     name.close();
     std::ifstream ques;
+    questions.clear();
     ques.open("C:\\ProgramData\\Testing Sestem\\questions.txt");
     if (ques.is_open())
     {
@@ -1545,7 +1499,7 @@ void Quiz::deleteTest()
     }
     ques.close();
     std::ofstream q;
-    q.open("C:\\ProgramData\\Testing Sestem\\questions.txt");
+    q.open("C:\\ProgramData\\Testing Sestem\\questions.txt", std::ios::trunc);
     if (q.is_open())
     {
         for (auto str : questions)
@@ -1559,11 +1513,12 @@ void Quiz::deleteTest()
     }
     q.close();
     std::ifstream answer;
+    answers.clear();
     answer.open("C:\\ProgramData\\Testing Sestem\\answer.txt");
     if (answer.is_open())
     {
         std::string line;
-        while (std::getline(answer,line))
+        while (std::getline(answer, line))
         {
             if ((static_cast<int>(line[0]) - 48) == count)
             {
@@ -1581,7 +1536,7 @@ void Quiz::deleteTest()
     }
     answer.close();
     std::ofstream a;
-    a.open("C:\\ProgramData\\Testing Sestem\\answer.txt");
+    a.open("C:\\ProgramData\\Testing Sestem\\answer.txt", std::ios::trunc);
     if (a.is_open())
     {
         for (auto str : answers)
@@ -1594,4 +1549,374 @@ void Quiz::deleteTest()
         std::cout << "Файл с ответами открылся" << std::endl;
     }
     a.close();
+}
+void SystemTesting::DeleteUser(int k)
+{
+    int count = 1;
+    std::ifstream file;
+    std::vector<std::string> users;
+    std::vector<std::string> logins;
+    std::vector<std::string> passwords;
+    file.open("C:\\ProgramData\\Testing Sestem\\userData.txt");
+    if (file.is_open())
+    {
+        std::string line;
+        while (std::getline(file, line))
+        {
+            std::cout << count << ". " << line << std::endl;
+            users.push_back(line);
+            count++;
+        }
+    }
+    else
+    {
+        std::cout << "Файл с данными пользователя не открылся" << std::endl;
+    }
+    file.close();
+    if (k==0)
+    {
+        std::cout << "Какого пользователя удалить: " << std::endl;
+        std::cin >> count;
+    }
+    else 
+    {
+        count = k;
+    }
+    users.erase(users.begin() + count - 1);
+    std::ofstream filein;
+    filein.open("C:\\ProgramData\\Testing Sestem\\userData.txt", std::ios::trunc);
+    if (filein.is_open())
+    {
+        for (auto str : users)
+        {
+            filein << str << "\n";
+        }
+    }
+    else
+    {
+        std::cout << "Файл с названиями открылся" << std::endl;
+    }
+    filein.close();
+    int countlog = 1;
+    std::ifstream l;
+    l.open("C:\\ProgramData\\Testing Sestem\\login.txt");
+    if (l.is_open())
+    {
+        std::string line;
+        while (std::getline(l, line))
+        {
+            if (countlog != count)
+            {
+                logins.push_back(line);
+            }
+        }
+    }
+    else
+    {
+        std::cout << "Файл с логинами открылся" << std::endl;
+    }
+    l.close();
+
+    std::ofstream login;
+    login.open("C:\\ProgramData\\Testing Sestem\\login.txt", std::ios::trunc);
+    if (login.is_open())
+    {
+        for (auto str : logins)
+        {
+            login << str << "\n";
+        }
+    }
+    else
+    {
+        std::cout << "Файл с логинами открылся" << std::endl;
+    }
+    login.close();
+
+
+    int countpass = 1;
+    std::ifstream p;
+    p.open("C:\\ProgramData\\Testing Sestem\\password.txt");
+    if (p.is_open())
+    {
+        std::string line;
+        while (std::getline(p, line))
+        {
+            if (countlog != count)
+            {
+                passwords.push_back(line);
+            }
+        }
+    }
+    else
+    {
+        std::cout << "Файл с паролями открылся" << std::endl;
+    }
+    p.close();
+
+    std::ofstream pass;
+    pass.open("C:\\ProgramData\\Testing Sestem\\password.txt", std::ios::trunc);
+    if (pass.is_open())
+    {
+        for (auto str : passwords)
+        {
+            pass << str << "\n";
+        }
+    }
+    else
+    {
+        std::cout << "Файл с паролями открылся" << std::endl;
+    }
+    pass.close();
+
+}
+void SystemTesting::showAdminProfil()
+{
+    system("cls");
+    int chois;
+    std::cout << "Выберите функцию." << std::endl;
+    std::cout << std::endl;
+    std::cout << "1. Удалить пользователя." << std::endl;
+    std::cout << std::endl;
+    std::cout << "2. Модифицировать пользователя." << std::endl;
+    std::cout << std::endl;
+    std::cout << "3. Создать тест." << std::endl;
+    std::cout << std::endl;
+    std::cout << "4. Просмотр статистики" << std::endl;
+    std::cout << std::endl;
+    std::cout << "5. Удаление теста." << std::endl;
+    std::cout << std::endl;
+    std::cout << "6. Выйти из режима администратора." << std::endl;
+    std::cout << std::endl;
+    std::cin >> chois;
+    switch (chois)
+    {
+    case 1:
+        system("cls");
+        DeleteUser();
+        showAdminProfil();
+        break;
+    case 2:
+        system("cls");
+        ChangeUser();
+        showAdminProfil();
+        break;
+    case 3:
+        system("cls");
+        quiz.makeQuiz();
+        showAdminProfil();
+        break;
+    case 4:
+        system("cls");
+        showStatistic();
+        showAdminProfil();
+        break;
+    case 5:
+        system("cls");
+        quiz.deleteTest();
+        showAdminProfil();
+        break;
+    case 6:
+        system("cls");
+        Start();
+        break;
+    default:
+        break;
+    }
+
+}
+
+void SystemTesting::showStatistic()
+{
+    system("cls");
+    std::vector<std::string> id1;
+    std::vector<std::string> id2;
+    std::vector<std::string> login;
+    std::vector<std::string> names;
+    std::vector<int> all;
+    std::vector<int> right;
+    std::ifstream statistics;
+    std::ifstream NameTest;
+    NameTest.open("C:\\ProgramData\\Testing Sestem\\nameTest.txt");
+    if (NameTest.is_open())
+    {
+        std::string name;
+        while (std::getline(NameTest, name))
+        {
+            names.push_back(name);
+        }
+    }
+    else
+    {
+        std::cout << "Файл с названиями не открылся" << std::endl;
+    }
+    NameTest.close();
+    statistics.open("C:\\ProgramData\\Testing Sestem\\static.txt");
+    if (statistics.is_open())
+    {
+        std::string line;
+        statistics >> line;
+        while (!statistics.eof())
+        {
+            login.push_back(line);
+            statistics >> line;
+            id1.push_back(line);
+            statistics >> line;
+            id2.push_back(line);
+            statistics >> line;
+            all.push_back(stoi(line));
+            statistics >> line;
+            right.push_back(stoi(line));
+            statistics >> line;
+        }
+    }
+    else
+    {
+        std::cout << "Файл с разделами не открылся" << std::endl;
+    }
+    statistics.close();
+    std::cout << "Просмотреть статистику:" << std::endl;
+    std::cout << "1. Всю." << std::endl;
+    std::cout << "2. По пользователям." << std::endl;
+    std::cout << "3. По разделам." << std::endl;
+    int chois;
+    std::cin >> chois;
+    switch (chois)
+    {
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    default:
+        break;
+    }
+
+
+    std::cout << "Чтобы вернуться в профиль нажмиет любую кнопку." << std::endl;
+    _getch();
+}
+
+
+void SystemTesting::ChangeUser()
+{
+    int count = 1;
+    std::ifstream file;
+    User* users = new User[20];
+    std::vector<std::string> logins;
+    std::vector<std::string> passwords;
+    file.open("C:\\ProgramData\\Testing Sestem\\userData.txt");
+    if (file.is_open())
+    {
+        std::string line;
+        file >> line;
+        while (!file.eof())
+        {
+            std::cout << count << ". " << line<<" ";
+            users[count].SetName(const_cast<char*>(line.data()));
+            file >> line;
+            std::cout  << line << " ";
+            users[count].SetMiddleName(const_cast<char*>(line.data()));
+            file >> line;
+            std::cout  << line << " "<<std::endl;
+            users[count].SetSurename(const_cast<char*>(line.data()));
+            file >> line;
+            users[count].SetAdress(const_cast<char*>(line.data()));
+            file >> line;
+            users[count].SetPhonee(const_cast<char* >(line.data()));
+            std::cout << count << ". " << line << std::endl;
+            count++;
+        }
+    }
+    else
+    {
+        std::cout << "Файл с данными пользователя не открылся" << std::endl;
+    }
+    file.close();
+    file.open("C:\\ProgramData\\Testing Sestem\\login.txt");
+    if (file.is_open())
+    {
+        std::string line;
+        file >> line;
+        while (!file.eof())
+        {
+            logins.push_back(line);
+        }
+    }
+    else
+    {
+        std::cout << "Файл с логинами  не открылся" << std::endl;
+    }
+    file.close();
+    file.open("C:\\ProgramData\\Testing Sestem\\password.txt");
+    if (file.is_open())
+    {
+        std::string line;
+        file >> line;
+        while (!file.eof())
+        {
+            passwords.push_back(line);
+        }
+    }
+    else
+    {
+        std::cout << "Файл с логинами  не открылся" << std::endl;
+    }
+    file.close();
+    std::cout << "Какого пользователя изменить: " << std::endl;
+    std::cin >> count;
+    DeleteUser(count);
+    system("cls");
+    std::cout << "Что изменить у позователя?" << std::endl;
+    std::cout << "1. ФИО" << std::endl;
+    std::cout << "2. Адресс" << std::endl;
+    std::cout << "3. Номер Телофона" << std::endl;
+    std::cout << "4. Логин " << std::endl;
+    std::cout << "5. Пароль" << std::endl;
+    int chois;
+    std::string newdata;
+    std::cin >> chois;
+    users[count].SetLog(logins[count]);
+    users[count].SetPass(passwords[count]);
+    switch (chois)
+    {case 1:
+        std::cout << "Ведите новое Имя" << std::endl;
+        std::getline(std::cin, newdata);
+        users[count].SetName(const_cast<char*>(newdata.data()));
+        std::cout << "Ведите новое Отечтво" << std::endl;
+        std::getline(std::cin, newdata);
+        users[count].SetMiddleName(const_cast<char*>(newdata.data()));
+        std::cout << "Ведите новую Фамилию" << std::endl;
+        std::getline(std::cin, newdata);
+        users[count].SetSurename(const_cast<char*>(newdata.data()));
+        break;
+    case 2:
+        std::cout << "Ведите новый адресс" << std::endl;
+        std::getline(std::cin, newdata);
+        users[count].SetAdress(const_cast<char*>(newdata.data()));
+        break;
+    case 3:
+        std::cout << "Ведите новый номер телофона" << std::endl;
+        std::getline(std::cin, newdata);
+        users[count].SetPhonee(const_cast<char*>(newdata.data()));
+        break;
+    case 4:
+        std::cout << "Ведите новый логин" << std::endl;
+        users[count].SetLog(const_cast<char*>(newdata.data()));
+        std::getline(std::cin, newdata);
+        break;
+    case 5:
+        std::cout << "Ведите новый пароль" << std::endl;
+        users[count].SetPass(const_cast<char*>(newdata.data()));
+        std::getline(std::cin, newdata);
+        break;
+    default:
+        break;
+    }
+    users[count].Fillfile();
+    users[count].LogFill();
+    users[count].PassFill();
+    std::cout <<"Данные пользвателя изменены." << std::endl;
+    std::cout << "Чтобы вернуться в профиль нажмиет любую кнопку." << std::endl;
+    _getch();
 }
