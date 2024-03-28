@@ -1,4 +1,4 @@
-#include "Quiz.h"
+ï»¿#include "Quiz.h"
 
 void Quiz::selectingSection()
 {
@@ -19,7 +19,7 @@ void Quiz::selectingSection()
     }
     else
     {
-        std::cout << "Ôàéë ñ ðàçäåëàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ñ€Ð°Ð·Ð´ÐµÐ»Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
 }
 void Quiz::AddSect(std::string newSect)
@@ -32,7 +32,7 @@ void Quiz::AddSect(std::string newSect)
     }
     else
     {
-        std::cout << "Ôàéë äëÿ çàïèñè îòäåëîâ íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð¾Ñ‚Ð´ÐµÐ»Ð¾Ð² Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Sections.close();
 }
@@ -46,7 +46,7 @@ void Quiz::AddNameQuiz(std::string newName, char id)
     }
     else
     {
-        std::cout << "Ôàéë äëÿ çàïèñè íàçâàíèé âèêòîðèí íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ð¹ Ð²Ð¸ÐºÑ‚Ð¾Ñ€Ð¸Ð½ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Name.close();
 }
@@ -60,7 +60,7 @@ void Quiz::AddQuestions(std::string newQues, char id1, int id2)
     }
     else
     {
-        std::cout << "Ôàéë äëÿ çàïèñè âîïðîñîâ íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ¾Ð² Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Questions.close();
 }
@@ -74,7 +74,7 @@ void Quiz::AddAnswers(std::string newAnswer, char id1, int id2)
     }
     else
     {
-        std::cout << "Ôàéë äëÿ çàïèñè îòâåòîâ íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð¾Ñ‚Ð²ÐµÑ‚Ð¾Ð² Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Questions.close();
 }
@@ -85,9 +85,9 @@ void Quiz::makeQuiz() {
     std::string nameQuiz;
     std::string questions;
     std::string answers;
-    int count = 0;//íîìåð ðàçäåëà
+    int count = 0;//Ð½Ð¾Ð¼ÐµÑ€ Ñ€Ð°Ð·Ð´ÐµÐ»Ð°
     selectingSection();
-    std::cout << "Âûáåðèòå ðàçäåë: " << std::endl;
+    std::cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ€Ð°Ð·Ð´ÐµÐ»: " << std::endl;
     std::cout << std::endl;
     for (auto line : sections)
     {
@@ -95,22 +95,22 @@ void Quiz::makeQuiz() {
         std::cout << count << " " << line << std::endl;
     }
     count++;
-    std::cout << count << " Äîáàâèòü íîâûé ðàçäåë" << std::endl;
+    std::cout << count << " Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð½Ð¾Ð²Ñ‹Ð¹ Ñ€Ð°Ð·Ð´ÐµÐ»" << std::endl;
     std::cout << std::endl;
-    std::cout << "Âàø âûáîð: ";
+    std::cout << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: ";
     std::cin >> choise;
     std::cout << std::endl;
     count = static_cast<int>(choise) - 48;
     if (sections.size() + 1 == count)
     {
         std::string newSect;
-        std::cout << "Ââåäèòå íàçâàíèå íîâîãî ðàçäåëà: ";
+        std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð½Ð¾Ð²Ð¾Ð³Ð¾ Ñ€Ð°Ð·Ð´ÐµÐ»Ð°: ";
         std::cin.ignore();
         getline(std::cin, newSect);
         AddSect(newSect);
     }
     std::cout << std::endl;
-    std::cout << "Ââåäèòå íàçâàíèå òåñòà: ";
+    std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ‚ÐµÑÑ‚Ð°: ";
     std::cin.ignore();
     getline(std::cin, nameQuiz);
     AddNameQuiz(nameQuiz, choise);
@@ -126,21 +126,21 @@ void Quiz::makeQuiz() {
     {
         std::cout << std::endl;
         countQues++;
-        std::cout << "Ââåäèòå âîïðîñ: ";
+        std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð²Ð¾Ð¿Ñ€Ð¾Ñ: ";
         getline(std::cin, questions);
         AddQuestions(questions, choise, id1);
         std::cout << std::endl;
-        std::cout << "Ââåäèòå îòâåò: ";
+        std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¾Ñ‚Ð²ÐµÑ‚: ";
         getline(std::cin, answers);
         AddAnswers(answers, choise, id1);
         std::cout << std::endl;
         system("cls");
-        std::cout << "×òîáû çàâåðøèòü ââîä âîïðîñîâ íàæìèòå ïðîáåë." << std::endl;
+        std::cout << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°Ð²ÐµÑ€ÑˆÐ¸Ñ‚ÑŒ Ð²Ð²Ð¾Ð´ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ¾Ð² Ð½Ð°Ð¶Ð¼Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¾Ð±ÐµÐ»." << std::endl;
         std::cout << std::endl;
         count = _getch();
 
     }
-    std::cout << "Òåñò óñïåøíî ñîçäàí." << std::endl;
+    std::cout << "Ð¢ÐµÑÑ‚ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ ÑÐ¾Ð·Ð´Ð°Ð½." << std::endl;
     Sleep(2000);
     system("cls");
 }
@@ -164,7 +164,7 @@ int Quiz::numTest(char id)
     }
     else
     {
-        std::cout << "Ôàéë ñ íàçâàíèÿìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     NameTest.close();
     return Id;
@@ -175,7 +175,7 @@ void Quiz::choiceTest()
     sections.clear();
     system("cls");
     selectingSection();
-    std::cout << "Âûáåðèòå ðàçäåë: " << std::endl;
+    std::cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ€Ð°Ð·Ð´ÐµÐ»: " << std::endl;
     std::cout << std::endl;
     int count = 1;
     for (auto line : sections)
@@ -183,7 +183,7 @@ void Quiz::choiceTest()
         std::cout << count << " " << line << std::endl;
         count++;
     }
-    std::cout << "Âàø âûáîð: ";
+    std::cout << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: ";
     char chois;
     std::cin >> chois;
     std::cout << std::endl;
@@ -205,7 +205,7 @@ void Quiz::choiceTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ íàçâàíèÿìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     NameTest.close();
     for (auto line : nameQuiz)
@@ -213,7 +213,7 @@ void Quiz::choiceTest()
         std::cout << count << " " << line << std::endl;
         count++;
     }
-    std::cout << "Âàø âûáîð: ";
+    std::cout << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: ";
     char chois2;
     std::cin >> chois2;
     system("cls");
@@ -283,21 +283,21 @@ void Quiz::ShowAnswers()
     for (auto ques : questions)
     {
         std::cout << count + 1 << ". " << ques << std::endl;
-        std::cout << "Âàø îòâåò: " << useranswer[count] << std::endl;
+        std::cout << "Ð’Ð°Ñˆ Ð¾Ñ‚Ð²ÐµÑ‚: " << useranswer[count] << std::endl;
         if (answerRT[count])
         {
 
-            std::cout << "Âåðíûé îòâåò." << std::endl;
+            std::cout << "Ð’ÐµÑ€Ð½Ñ‹Ð¹ Ð¾Ñ‚Ð²ÐµÑ‚." << std::endl;
         }
         else
         {
-            std::cout << "Íåïðàâèëüíûé îòâåò." << std::endl;
-            std::cout << "Âåðíûé îòâåò." << answers[count] << std::endl;
+            std::cout << "ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¹ Ð¾Ñ‚Ð²ÐµÑ‚." << std::endl;
+            std::cout << "Ð’ÐµÑ€Ð½Ñ‹Ð¹ Ð¾Ñ‚Ð²ÐµÑ‚." << answers[count] << std::endl;
         }
         count++;
         std::cout << std::endl;
     }
-    std::cout << "Íàæìèåò ëþáóþ êëàâèøó, ÷òîáû âåðíóòüñÿ â àêêàóíò." << std::endl;
+    std::cout << "ÐÐ°Ð¶Ð¼Ð¸ÐµÑ‚ Ð»ÑŽÐ±ÑƒÑŽ ÐºÐ»Ð°Ð²Ð¸ÑˆÑƒ, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒÑÑ Ð² Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚." << std::endl;
     count = _getch();
 }
 void Quiz::SaveInterTesting(char id1, char id2)
@@ -315,7 +315,7 @@ void Quiz::SaveInterTesting(char id1, char id2)
     }
     else
     {
-        std::cout << "Ôàéë ñ ëîãèíàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð»Ð¾Ð³Ð¸Ð½Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     filelogin.close();
 }
@@ -355,7 +355,7 @@ void Quiz::ShowfinishTest()
 
                 }
                 selectingSection();
-                std::cout << count << ". Ðàçäåë: " << sections[stoi(id1.back()) - 1];
+                std::cout << count << ". Ð Ð°Ð·Ð´ÐµÐ»: " << sections[stoi(id1.back()) - 1];
                 int countname = 0;
                 NameTest.open("C:\\ProgramData\\Testing Sestem\\nameTest.txt");
                 if (NameTest.is_open())
@@ -369,7 +369,7 @@ void Quiz::ShowfinishTest()
                             countname++;
                             if ((stoi(id2.back()) == countname))
                             {
-                                std::cout << " òåñò: " << name.erase(0, 1) << std::endl;
+                                std::cout << " Ñ‚ÐµÑÑ‚: " << name.erase(0, 1) << std::endl;
                                 break;
                             }
 
@@ -378,7 +378,7 @@ void Quiz::ShowfinishTest()
                 }
                 else
                 {
-                    std::cout << "Ôàéë ñ íàçâàíèÿìè íå îòêðûëñÿ" << std::endl;
+                    std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
                 }
                 NameTest.close();
             }
@@ -387,18 +387,18 @@ void Quiz::ShowfinishTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ ðàçäåëàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ñ€Ð°Ð·Ð´ÐµÐ»Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Sections.close();
 
     if (count == 0)
     {
-        std::cout << "Ó âàñ íåò íåçàâåðø¸ííûõ òåñòîâ." << std::endl;
+        std::cout << "Ð£ Ð²Ð°Ñ Ð½ÐµÑ‚ Ð½ÐµÐ·Ð°Ð²ÐµÑ€ÑˆÑ‘Ð½Ð½Ñ‹Ñ… Ñ‚ÐµÑÑ‚Ð¾Ð²." << std::endl;
         Sleep(2000);
     }
     else
     {
-        std::cout << "Êàêîé òåñò ïðîäîëæèòü ðåøàòü? ";
+        std::cout << "ÐšÐ°ÐºÐ¾Ð¹ Ñ‚ÐµÑÑ‚ Ð¿Ñ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ Ñ€ÐµÑˆÐ°Ñ‚ÑŒ? ";
         int chois2;
         std::cin >> chois2;
         system("cls");
@@ -459,7 +459,7 @@ void Quiz::deleteFinishTest(char id1, char id2)
     }
     else
     {
-        std::cout << "Ôàéë ñ íåçàâåðùøåííûìè òåñòàìèíå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½ÐµÐ·Ð°Ð²ÐµÑ€Ñ‰ÑˆÐµÐ½Ð½Ñ‹Ð¼Ð¸ Ñ‚ÐµÑÑ‚Ð°Ð¼Ð¸Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Sections.close();
     std::ofstream InterTesting;
@@ -478,7 +478,7 @@ void Quiz::deleteFinishTest(char id1, char id2)
     }
     else
     {
-        std::cout << "Ôàéë ñ íåçàâåðùøåííûìè òåñòàìèíå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½ÐµÐ·Ð°Ð²ÐµÑ€Ñ‰ÑˆÐµÐ½Ð½Ñ‹Ð¼Ð¸ Ñ‚ÐµÑÑ‚Ð°Ð¼Ð¸Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     InterTesting.close();
 
@@ -493,7 +493,7 @@ void Quiz::saveStatic(char id1, char id2, int all, int right)
     }
     else
     {
-        std::cout << "Ôàéë ñ ñòàòèñòèêîé íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ¾Ð¹ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     statistics.close();
 }
@@ -530,7 +530,7 @@ void Quiz::showStatic()
                 right = stoi(line);
                 allr += right;
                 selectingSection();
-                std::cout << count << ". Ðàçäåë: " << sections[stoi(id1.back()) - 1];
+                std::cout << count << ". Ð Ð°Ð·Ð´ÐµÐ»: " << sections[stoi(id1.back()) - 1];
                 int countname = 0;
                 NameTest.open("C:\\ProgramData\\Testing Sestem\\nameTest.txt");
                 if (NameTest.is_open())
@@ -544,8 +544,8 @@ void Quiz::showStatic()
                             countname++;
                             if ((stoi(id2.back()) == countname))
                             {
-                                std::cout << " òåñò: " << name.erase(0, 1) << std::endl;
-                                std::cout << "Âñåãî âîïðîñîâ: " << all << ". Ïðàâèëüíî ðåøåííûõ: " << right << std::endl;
+                                std::cout << " Ñ‚ÐµÑÑ‚: " << name.erase(0, 1) << std::endl;
+                                std::cout << "Ð’ÑÐµÐ³Ð¾ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ¾Ð²: " << all << ". ÐŸÑ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ñ€ÐµÑˆÐµÐ½Ð½Ñ‹Ñ…: " << right << std::endl;
                                 break;
                             }
 
@@ -554,7 +554,7 @@ void Quiz::showStatic()
                 }
                 else
                 {
-                    std::cout << "Ôàéë ñ íàçâàíèÿìè íå îòêðûëñÿ" << std::endl;
+                    std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
                 }
                 NameTest.close();
             }
@@ -563,11 +563,11 @@ void Quiz::showStatic()
     }
     else
     {
-        std::cout << "Ôàéë ñ ðàçäåëàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ñ€Ð°Ð·Ð´ÐµÐ»Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     statistics.close();
-    std::cout << "Ïðîöåíò ïðàâèëüíî ðåø¸ííûõ çàäàíèé: " << (allr * 100) / allq << "%. " << std::endl;
-    std::cout << "×òîáû âåïíóòüñÿ â ïðîôèëü íàæìèåò ëþáóþ êíîïêó." << std::endl;
+    std::cout << "ÐŸÑ€Ð¾Ñ†ÐµÐ½Ñ‚ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ñ€ÐµÑˆÑ‘Ð½Ð½Ñ‹Ñ… Ð·Ð°Ð´Ð°Ð½Ð¸Ð¹: " << (allr * 100) / allq << "%. " << std::endl;
+    std::cout << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð²ÐµÐ¿Ð½ÑƒÑ‚ÑŒÑÑ Ð² Ð¿Ñ€Ð¾Ñ„Ð¸Ð»ÑŒ Ð½Ð°Ð¶Ð¼Ð¸ÐµÑ‚ Ð»ÑŽÐ±ÑƒÑŽ ÐºÐ½Ð¾Ð¿ÐºÑƒ." << std::endl;
     _getch();
 }
 void Quiz::Test(char id1, char id2, int k)
@@ -594,7 +594,7 @@ void Quiz::Test(char id1, char id2, int k)
     }
     else
     {
-        std::cout << "Ôàéë ñ âîïðîñàìè  íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ°Ð¼Ð¸  Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Question.close();
     if (Answer.is_open())
@@ -610,7 +610,7 @@ void Quiz::Test(char id1, char id2, int k)
     }
     else
     {
-        std::cout << "Ôàéë ñ îòâåòàìè  íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð¾Ñ‚Ð²ÐµÑ‚Ð°Ð¼Ð¸  Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Answer.close();
 
@@ -639,8 +639,8 @@ void Quiz::Test(char id1, char id2, int k)
     //////////////////
     while (count < questions.size())
     {
-        std::cout << "Åñëè õîòèòå ïðåðâàòü òåñòèðîâàíèå íàæìèòå ïðîáåë." << std::endl;
-        std::cout << "×òîáû ïðîäîëæèòü íàæìèòå ëþáóþ êëàâèøó." << std::endl;
+        std::cout << "Ð•ÑÐ»Ð¸ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¿Ñ€ÐµÑ€Ð²Ð°Ñ‚ÑŒ Ñ‚ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð½Ð°Ð¶Ð¼Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¾Ð±ÐµÐ»." << std::endl;
+        std::cout << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð¿Ñ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ Ð½Ð°Ð¶Ð¼Ð¸Ñ‚Ðµ Ð»ÑŽÐ±ÑƒÑŽ ÐºÐ»Ð°Ð²Ð¸ÑˆÑƒ." << std::endl;
         x = _getch();
         if (x == 32)
         {
@@ -649,11 +649,11 @@ void Quiz::Test(char id1, char id2, int k)
         }
         system("cls");
         std::cout << count + 1 << ". " << questions[count] << std::endl;
-        std::cout << "Âåäèòå âàø îòâåò: ";
+        std::cout << "Ð’ÐµÐ´Ð¸Ñ‚Ðµ Ð²Ð°Ñˆ Ð¾Ñ‚Ð²ÐµÑ‚: ";
         std::getline(std::cin, answ);
         if (answ == answers[count])
         {
-            std::cout << "Âåðíî." << std::endl;
+            std::cout << "Ð’ÐµÑ€Ð½Ð¾." << std::endl;
             Sleep(2000);
             right++;
 
@@ -662,7 +662,7 @@ void Quiz::Test(char id1, char id2, int k)
         }
         else
         {
-            std::cout << "Íåïðàâèëüíî." << std::endl;
+            std::cout << "ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾." << std::endl;
             Sleep(2000);
             fals++;
             answerRT.push_back(false);
@@ -692,18 +692,18 @@ void Quiz::Test(char id1, char id2, int k)
         {
             if (error == 0)
             {
-                std::cout << "Äåëåíèå íà íîëü.îòâåòû íå ïîñ÷èòàëèñü." << std::endl;
+                std::cout << "Ð”ÐµÐ»ÐµÐ½Ð¸Ðµ Ð½Ð° Ð½Ð¾Ð»ÑŒ.Ð¾Ñ‚Ð²ÐµÑ‚Ñ‹ Ð½Ðµ Ð¿Ð¾ÑÑ‡Ð¸Ñ‚Ð°Ð»Ð¸ÑÑŒ." << std::endl;
             }
         }
         all = right + fals;
         pr = pr / all;
         int score = determineScore(pr);
         system("cls");
-        std::cout << "Ïðàâèëüíî îòâå÷åííî " << right << " èç " << all << std::endl;
-        std::cout << "Ïðîöåíò ïðàâèëüíî ðåø¸ííûõ âîïðîñîâ: " << pr << "%" << std::endl;
-        std::cout << "Âàøà îöåíêà: " << score << std::endl;
-        std::cout << "×òîáû ñðàíèòü îòâåòû íàæìèòå Enter." << std::endl;
-        std::cout << "Íàæìèåò ëþáóþ êëàâèøó, ÷òîáû âåðíóòüñÿ â àêêàóíò." << std::endl;
+        std::cout << "ÐŸÑ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ð¾Ñ‚Ð²ÐµÑ‡ÐµÐ½Ð½Ð¾ " << right << " Ð¸Ð· " << all << std::endl;
+        std::cout << "ÐŸÑ€Ð¾Ñ†ÐµÐ½Ñ‚ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ñ€ÐµÑˆÑ‘Ð½Ð½Ñ‹Ñ… Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ¾Ð²: " << pr << "%" << std::endl;
+        std::cout << "Ð’Ð°ÑˆÐ° Ð¾Ñ†ÐµÐ½ÐºÐ°: " << score << std::endl;
+        std::cout << "Ð§Ñ‚Ð¾Ð±Ñ‹ ÑÑ€Ð°Ð½Ð¸Ñ‚ÑŒ Ð¾Ñ‚Ð²ÐµÑ‚Ñ‹ Ð½Ð°Ð¶Ð¼Ð¸Ñ‚Ðµ Enter." << std::endl;
+        std::cout << "ÐÐ°Ð¶Ð¼Ð¸ÐµÑ‚ Ð»ÑŽÐ±ÑƒÑŽ ÐºÐ»Ð°Ð²Ð¸ÑˆÑƒ, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒÑÑ Ð² Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚." << std::endl;
         count = _getch();
         saveStatic(id1, id2, all, right);
         if (count == 13)
@@ -733,12 +733,12 @@ void Quiz::deleteTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ íàçâàíèÿìè òåñòîâ îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ñ‚ÐµÑÑ‚Ð¾Ð² Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Name.close();
     for (auto sect : sections)
     {
-        std::cout << count << "Ðàçäåë: " << sect << std::endl;
+        std::cout << count << "Ð Ð°Ð·Ð´ÐµÐ»: " << sect << std::endl;
         for (auto name : nameQuiz)
         {
             if ((static_cast<int>(name[0]) - 48) == count)
@@ -750,9 +750,9 @@ void Quiz::deleteTest()
         countname = 1;
         count++;
     }
-    std::cout << "Èç êàêîãî ðàçäåëà óäàëèòü: " << std::endl;
+    std::cout << "Ð˜Ð· ÐºÐ°ÐºÐ¾Ð³Ð¾ Ñ€Ð°Ð·Ð´ÐµÐ»Ð° ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ: " << std::endl;
     std::cin >> count;
-    std::cout << "Íîðìåð óäàëÿåìîãî òåñòà: " << std::endl;
+    std::cout << "ÐÐ¾Ñ€Ð¼ÐµÑ€ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ Ñ‚ÐµÑÑ‚Ð°: " << std::endl;
     std::cin >> countname;
     nameQuiz.clear();
     int x = 1;
@@ -783,7 +783,7 @@ void Quiz::deleteTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ íàçâàíèÿìè òåñòîâ îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ñ‚ÐµÑÑ‚Ð¾Ð² Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     Namet.close();
     std::ofstream name;
@@ -797,7 +797,7 @@ void Quiz::deleteTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ íàçâàíèÿìè îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     name.close();
     std::ifstream ques;
@@ -820,7 +820,7 @@ void Quiz::deleteTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ âîïðîñàìè îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ°Ð¼Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     ques.close();
     std::ofstream q;
@@ -834,7 +834,7 @@ void Quiz::deleteTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ âîïðîñàìè îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ°Ð¼Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     q.close();
     std::ifstream answer;
@@ -857,7 +857,7 @@ void Quiz::deleteTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ âîïðîñàìè îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ°Ð¼Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     answer.close();
     std::ofstream a;
@@ -871,7 +871,7 @@ void Quiz::deleteTest()
     }
     else
     {
-        std::cout << "Ôàéë ñ îòâåòàìè îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð¾Ñ‚Ð²ÐµÑ‚Ð°Ð¼Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     a.close();
 }
@@ -906,7 +906,7 @@ void Quiz::showStatistic()
             right = stoi(line);
             allr += right;
             selectingSection();
-            std::cout << count << ". Ðàçäåë: " << sections[stoi(id1.back()) - 1] << std::endl;
+            std::cout << count << ". Ð Ð°Ð·Ð´ÐµÐ»: " << sections[stoi(id1.back()) - 1] << std::endl;
             int countname = 0;
             NameTest.open("C:\\ProgramData\\Testing Sestem\\nameTest.txt");
             if (NameTest.is_open())
@@ -920,8 +920,8 @@ void Quiz::showStatistic()
                         countname++;
                         if ((stoi(id2.back()) == countname))
                         {
-                            std::cout << " òåñò: " << name.erase(0, 1) << std::endl;
-                            std::cout << "Âñåãî âîïðîñîâ: " << all << ". Ïðàâèëüíî ðåøåííûõ: " << right << std::endl;
+                            std::cout << " Ñ‚ÐµÑÑ‚: " << name.erase(0, 1) << std::endl;
+                            std::cout << "Ð’ÑÐµÐ³Ð¾ Ð²Ð¾Ð¿Ñ€Ð¾ÑÐ¾Ð²: " << all << ". ÐŸÑ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ñ€ÐµÑˆÐµÐ½Ð½Ñ‹Ñ…: " << right << std::endl;
                             break;
                         }
 
@@ -930,7 +930,7 @@ void Quiz::showStatistic()
             }
             else
             {
-                std::cout << "Ôàéë ñ íàçâàíèÿìè íå îòêðûëñÿ" << std::endl;
+                std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
             }
             NameTest.close();
             statistics >> line;
@@ -938,10 +938,10 @@ void Quiz::showStatistic()
     }
     else
     {
-        std::cout << "Ôàéë ñ ðàçäåëàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ñ€Ð°Ð·Ð´ÐµÐ»Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     statistics.close();
-    std::cout << "Ïðîöåíò ïðàâèëüíî ðåø¸ííûõ çàäàíèé: " << (allr * 100) / allq << "%. " << std::endl;
-    std::cout << "×òîáû âåïíóòüñÿ â ïðîôèëü íàæìèåò ëþáóþ êíîïêó." << std::endl;
+    std::cout << "ÐŸÑ€Ð¾Ñ†ÐµÐ½Ñ‚ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ñ€ÐµÑˆÑ‘Ð½Ð½Ñ‹Ñ… Ð·Ð°Ð´Ð°Ð½Ð¸Ð¹: " << (allr * 100) / allq << "%. " << std::endl;
+    std::cout << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð²ÐµÐ¿Ð½ÑƒÑ‚ÑŒÑÑ Ð² Ð¿Ñ€Ð¾Ñ„Ð¸Ð»ÑŒ Ð½Ð°Ð¶Ð¼Ð¸ÐµÑ‚ Ð»ÑŽÐ±ÑƒÑŽ ÐºÐ½Ð¾Ð¿ÐºÑƒ." << std::endl;
     _getch();
 }

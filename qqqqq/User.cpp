@@ -1,4 +1,4 @@
-#include "User.h"
+ï»¿#include "User.h"
 void User::SetName(char* name)
 {
     this->name = name;
@@ -49,7 +49,7 @@ void User::Fillfile()
     }
     else
     {
-        std::cout << "Ôàéë äëîÿ çàïèñè äàííûõ íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ð´Ð»Ð¾Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     fileUser.close();
 }
@@ -63,7 +63,7 @@ void User::LogFill()
     }
     else
     {
-        std::cout << "Ôàéë ñ ëîãèíàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð»Ð¾Ð³Ð¸Ð½Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     filelogin.close();
 }
@@ -77,7 +77,7 @@ void User::PassFill()
     }
     else
     {
-        std::cout << "Ôàéë ñ ëîãèíàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð»Ð¾Ð³Ð¸Ð½Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     filepass.close();
 }
@@ -109,7 +109,7 @@ int User::GetId()
     }
     else
     {
-        std::cout << "Ôàéë ñ ëîãèíàìè íå îòêðûëñÿ" << std::endl;
+        std::cout << "Ð¤Ð°Ð¹Ð» Ñ Ð»Ð¾Ð³Ð¸Ð½Ð°Ð¼Ð¸ Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ð»ÑÑ" << std::endl;
     }
     filelogin.close();
     return -1;
