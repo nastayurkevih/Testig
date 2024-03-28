@@ -10,7 +10,6 @@
 class SystemTesting
 {
 public:
-    SystemTesting() : r{ 0 } {}
     int Start();
     void UserStart();
     void UserLog();
@@ -29,6 +28,6 @@ public:
 private:
     User user;
     Quiz quiz;
-    int r;
+  
 };
 
